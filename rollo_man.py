@@ -2,6 +2,11 @@
 from gpiozero import Button, LED
 from signal import pause
 import time
+import logging
+
+logging.basicConfig(filename='/home/pi/mylog1.log', filemode='a', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+ 13                      level=logging.INFO)
+
 
 btn1 = Button(17, hold_time = 1)
 btn2 = Button(22, hold_time = 1)
