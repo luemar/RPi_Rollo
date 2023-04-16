@@ -6,9 +6,10 @@ import logging
 import schedule
 import threading
 
-logging.basicConfig(filename='/home/pi/mylog1.log', filemode='a',\
+logging.basicConfig(filename='/home/pi/mylog1.log', filemode='w',\
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',\
                     level=logging.INFO)
+logging.info('rollo_man.py gestarted')
 
 Taste_li_autoauf = Button(17, hold_time = 1)
 Taste_li_autoab = Button(22, hold_time = 1)
@@ -17,7 +18,8 @@ Taste_li_manab = Button(5)
 Taste_re_autoauf = Button(6, hold_time = 1)
 Taste_re_autoab = Button(19, hold_time = 1)
 Taste_re_manauf = Button(13)
-Taste_re_manab = Button(26)
+Taste_re_manab = Button(26
+)
 
 led1 = LED(25)
 led2 = LED(23)
@@ -38,7 +40,7 @@ def released_li_up(Taste_li_autoauf):
         Button.was_held = False
 
 def held_li_down(Taste_li_autoab):
-    print("Taste li ab gehalten")
+    #print("Taste li ab gehalten")
     Button.was_held = True
     led2.on()
     time.sleep(18)
@@ -49,7 +51,7 @@ def released_li_down(Taste_li_autoab):
         Button.was_held = False
 
 def held_re_up(Taste_re_autoauf):
-    print("Taste re auf gehalten")
+    #print("Taste re auf gehalten")
     Button.was_held = True
     led3.on()
     time.sleep(18)
@@ -57,21 +59,20 @@ def held_re_up(Taste_re_autoauf):
 
 def released_re_up(Taste_re_autoauf):
     if not Taste_re_autoauf.was_held:
-       Button.was_held = False
+        Button.was_held = False
 
 def held_re_down(Taste_re_autoab):
-   print("Taste re ab gehalten")
-   Button.was_held = True
-   led4.on()
-   time.sleep(18)
-   led4.off()
+    #print("Taste re ab gehalten")
+    Button.was_held = True
+    led4.on()
+    time.sleep(18)
+    led4.off()
 
 def released_re_down(Taste_re_autoab):
     if not Taste_re_autoab.was_held:
-       Button.was_held = False
-
+        Button.was_held = False
 def on_up_li():
-    print("Taste li auf gedrückt")
+    print("Taste li auf gedrueckt")
     led1.on()
 
 def off_up_li():
@@ -79,28 +80,40 @@ def off_up_li():
     led1.off()
 
 def on_down_li():
-   print("Taste li ab gedrückt")
-   led2.on()
+    print("Taste li ab gedrueckt")
+    led2.on()
 
 def off_down_li():
-   print("Taste li ab losgelassen")
-   led2.off()
+    print("Taste li ab losgelassen")
+    led2.off()
 
 def on_up_re():
-   print("Taste re auf gedrückt")
-   led3.on()
+    print("Taste re auf gedrueckt")
+    led3.on()
 
 def off_up_re():
-   print("Taste re auf losgelassen")
-   led3.off()
+    print("Taste re auf losgelassen")
+    led3.off()
 
 def on_down_re():
-   print("Taste re ab gedrückt")
-   led4.on()
+    print("Taste re ab gedrueckt")
+    led4.on()
 
 def off_down_re():
-   print("Taste re ab losgelassen")
-   led4.off()
+    print("Taste re ab losgelassen")
+    led4.off()
+    
+def zeitschalt_runterfahren_an():
+    led2.on()
+    time.sleep(18)
+    led2.off()
+    logging.info('Rollo li geschlossen')
+    time.sleep(2)
+
+    led4.on()
+    time.sleep(15)
+    led4.off()
+    logging.info('Rollo re geschlossen')
 
 def zeitschalt_hochfahren_an():
     led1.on()
@@ -114,25 +127,15 @@ def zeitschalt_hochfahren_an():
     led3.off()
     logging.info('Rollo re offen')
 
-def zeitschalt_runterfahren_an():
-    led2.on()
-    time.sleep(18)
-    led2.off()
-    logging.info('Rollo li geschlossen')
-
-    led4.on()
-    time.sleep(18)
-    led4.off()
-    logging.info('Rollo re geschlossen')
-
 def schedule_thread():
     while True:
         schedule.run_pending()
         time.sleep(1)
 
 def main():
-    schedule.every().day.at("11:31").do(zeitschalt_hochfahren_an)
-    schedule.every().day.at("11:32").do(zeitschalt_runterfahren_an)
+    #schedule.every().day.at("XX:XX").do(zeitschalt_runterfahren_an)
+    schedule.every().day.at("XX:XX").do(zeitschalt_hochfahren_an)
+    logging.info('Rollo heruntergefahren')
 
     threading.Thread(target=schedule_thread).start()
 
@@ -156,8 +159,10 @@ def main():
     Taste_re_manab.when_pressed = on_down_re
     Taste_re_manab.when_released = off_down_re
 
-    pause()
+
     print("Init abgeschlossen")
+    pause()
 
 if __name__ == "__main__":
     main()
+
