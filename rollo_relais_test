@@ -1,0 +1,37 @@
+#!/usr/bin/python3
+from gpiozero import LED
+from signal import pause
+import time, sys
+import logging
+
+logging.basicConfig(filename='/home/pi/mylog1.log', filemode='w',\
+level=logging.DEBUG, format='%(message)s:%(asctime)s')
+
+
+#led1 = LED(25) Rolladen li auf
+led2 = LED(23) #Rolladen li ab
+led3 = LED(24) #Rolladen re auf
+led4 = LED(18) #Rolladen re ab
+
+#Rolladen li ab
+led2.on()
+time.sleep(5)
+led2.off()
+logging.info('Rollo li geschlossen')
+time.sleep(2)
+
+#Rolladen re ab
+led4.on()
+time.sleep(5)
+led4.off()
+logging.info('Rollo re geschlossen')
+
+time.sleep(2)
+
+#Rolladen re kurz auf
+led3.on()
+time.sleep(0.6)
+led3.off()
+logging.info('Rollo re Endposition')
+
+sys.exit()
