@@ -105,26 +105,26 @@ def off_down_re():
     
 def zeitschalt_runterfahren_an():
     led2.on()
-    time.sleep(18)
+    time.sleep(17.5)
     led2.off()
     logging.info('Rollo li geschlossen')
-    time.sleep(2)
-
-    led4.on()
-    time.sleep(15)
-    led4.off()
-    logging.info('Rollo re geschlossen')
-
-def zeitschalt_hochfahren_an():
-    led1.on()
-    time.sleep(18)
-    led1.off()
-    logging.info('Rollo li offen')
     time.sleep(2)
 
     led3.on()
     time.sleep(18)
     led3.off()
+    logging.info('Rollo re geschlossen')
+
+def zeitschalt_hochfahren_an():
+    led1.on()
+    time.sleep(17.5)
+    led1.off()
+    logging.info('Rollo li offen')
+    time.sleep(2)
+
+    led4.on()
+    time.sleep(18)
+    led4.off()
     logging.info('Rollo re offen')
 
 def schedule_thread():
