@@ -137,9 +137,9 @@ def main():
     gpio_pin_12=switch.value
     if gpio_pin_12 == 1:
         schedule.every().day.at("HH:MM").do(zeitschalt_hochfahren_an)
+        logging.info('Rollos hochgefahren')
     schedule.every().day.at("HH:MM").do(zeitschalt_runterfahren_an)
-    
-    logging.info('Rollo heruntergefahren')
+    logging.info('Rollos heruntergefahren')
 
     threading.Thread(target=schedule_thread).start()
 
