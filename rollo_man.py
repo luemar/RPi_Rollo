@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from gpiozero import Button, LED
+from gpiozero import Button, LED, DigitalInputDevice
 from signal import pause
 import time
 import logging
@@ -18,13 +18,14 @@ Taste_li_manab = Button(5)
 Taste_re_autoauf = Button(6, hold_time = 1)
 Taste_re_autoab = Button(19, hold_time = 1)
 Taste_re_manauf = Button(13)
-Taste_re_manab = Button(26
-)
+Taste_re_manab = Button(26)
 
 led1 = LED(25)
 led2 = LED(23)
 led3 = LED(24)
 led4 = LED(18)
+
+switch=DigitalInputDevice(12, pull_up=False)
 
 Button.was_held = False
 
@@ -105,25 +106,25 @@ def off_down_re():
     
 def zeitschalt_runterfahren_an():
     led2.on()
-    time.sleep(17.5)
+    time.sleep(18.2)
     led2.off()
     logging.info('Rollo li geschlossen')
     time.sleep(2)
 
     led3.on()
-    time.sleep(18)
+    time.sleep(17.5)
     led3.off()
     logging.info('Rollo re geschlossen')
 
 def zeitschalt_hochfahren_an():
     led1.on()
-    time.sleep(17.5)
+    time.sleep(18.2)
     led1.off()
     logging.info('Rollo li offen')
     time.sleep(2)
 
     led4.on()
-    time.sleep(18)
+    time.sleep(17.5)
     led4.off()
     logging.info('Rollo re offen')
 
@@ -133,8 +134,11 @@ def schedule_thread():
         time.sleep(1)
 
 def main():
-    #schedule.every().day.at("XX:XX").do(zeitschalt_runterfahren_an)
-    schedule.every().day.at("XX:XX").do(zeitschalt_hochfahren_an)
+    gpio_pin_12=switch.value
+    if gpio_pin_12 == 1:
+        schedule.every().day.at("HH:MM").do(zeitschalt_hochfahren_an)
+    schedule.every().day.at("HH:MM").do(zeitschalt_runterfahren_an)
+    
     logging.info('Rollo heruntergefahren')
 
     threading.Thread(target=schedule_thread).start()
@@ -158,7 +162,6 @@ def main():
     Taste_re_manauf.when_released = off_up_re
     Taste_re_manab.when_pressed = on_down_re
     Taste_re_manab.when_released = off_down_re
-
 
     print("Init abgeschlossen")
     pause()
